@@ -25,26 +25,33 @@ export default function App() {
     <Router>
       <ThemeProvider>
         <SidebarProvider>
-          <div className="flex h-screen bg-slate-50 dark:bg-slate-900 transition-colors">
-            <DashboardSidebar />
-            <div className="flex-1 flex flex-col overflow-hidden">
-              <DashboardHeader />
-              <main className="flex-1 overflow-auto p-4 md:p-6 lg:p-8">
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
-                    <Route path="/" element={<DashboardPage />} />
-                    <Route path="/candidates" element={<CandidatesPage />} />
-                    <Route path="/candidates/:id" element={<CandidateProfilePage />} />
-                    <Route path="/jobs" element={<JobsPage />} />
-                    <Route path="/recruiters" element={<RecruitersPage />} />
-                    <Route path="/email-tracking" element={<EmailTrackingPage />} />
-                    <Route path="/reports" element={<ReportsPage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                  </Routes>
-                </Suspense>
+          <div className="flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
+
+            {/* ── FULL WIDTH TOP HEADER ───────────────────── */}
+            <DashboardHeader />
+
+            {/* ── SIDEBAR + MAIN CONTENT ──────────────────── */}
+            <div className="flex flex-1 overflow-hidden">
+              <DashboardSidebar />
+              <main className="flex-1 overflow-auto">
+                <div className="p-6 lg:p-8 max-w-[1600px]">
+                  <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                      <Route path="/" element={<DashboardPage />} />
+                      <Route path="/candidates" element={<CandidatesPage />} />
+                      <Route path="/candidates/:id" element={<CandidateProfilePage />} />
+                      <Route path="/jobs" element={<JobsPage />} />
+                      <Route path="/recruiters" element={<RecruitersPage />} />
+                      <Route path="/email-tracking" element={<EmailTrackingPage />} />
+                      <Route path="/reports" element={<ReportsPage />} />
+                      <Route path="/settings" element={<SettingsPage />} />
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                  </Suspense>
+                </div>
               </main>
             </div>
+
           </div>
         </SidebarProvider>
       </ThemeProvider>

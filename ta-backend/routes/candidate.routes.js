@@ -6,13 +6,54 @@ const router = express.Router();
 /* ===============================
    CREATE CANDIDATE
 ================================ */
+// router.post("/", async (req, res) => {
+//   try {
+//     const candidate = new Candidate(req.body);
+//     await candidate.save();
+
+//     const populatedCandidate = await Candidate.findById(candidate._id).populate("jobId");
+
+//     res.status(201).json(populatedCandidate);
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+
+/* ===============================
+   CHECK FOR DUPLICATE CANDIDATE (name, phone, email)
+================================ */
+
 router.post("/", async (req, res) => {
   try {
+    // ── Duplicate check ──────────────────────────────────
+    const { name, phone, email } = req.body;
+    const duplicate = await Candidate.findOne({
+      $or: [
+        { name: { $regex: new RegExp(`^${name}$`, "i") } },
+        { phone },
+        { email: { $regex: new RegExp(`^${email}$`, "i") } },
+      ],
+    });
+
+    if (duplicate) {
+      const conflict =
+        duplicate.name.toLowerCase() === name.toLowerCase()
+          ? "name"
+          : duplicate.phone === phone
+          ? "phone number"
+          : "email";
+
+      return res.status(409).json({
+        error: `A candidate with this ${conflict} already exists.`,
+        field: conflict,
+        existing: duplicate.name,
+      });
+    }
+    // ────────────────────────────────────────────────────
+
     const candidate = new Candidate(req.body);
     await candidate.save();
-
     const populatedCandidate = await Candidate.findById(candidate._id).populate("jobId");
-
     res.status(201).json(populatedCandidate);
   } catch (err) {
     res.status(500).json({ error: err.message });
