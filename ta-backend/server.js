@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
-
 dotenv.config();
 
 const app = express();
@@ -13,6 +12,10 @@ app.use(express.json());
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch(err => console.error("MongoDB connection error:", err));
+
+// ── Force model registration before routes ──
+import "./models/Candidate.js";
+import "./models/Job.js";
 
 // Routes
 import candidateRoutes from "./routes/candidate.routes.js";

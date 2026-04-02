@@ -20,23 +20,23 @@ interface Candidate {
 const PAGE_SIZE = 10;
 
 const STATUS_COLORS: Record<string, string> = {
-  in_progress:   "bg-blue-100 text-blue-700",
-  hired:         "bg-emerald-100 text-emerald-700",
-  on_hold:       "bg-amber-100 text-amber-700",
-  offer_sent:    "bg-purple-100 text-purple-700",
+  in_progress: "bg-blue-100 text-blue-700",
+  hired: "bg-emerald-100 text-emerald-700",
+  on_hold: "bg-amber-100 text-amber-700",
+  offer_sent: "bg-purple-100 text-purple-700",
   offer_pending: "bg-sky-100 text-sky-700",
-  rejected:      "bg-rose-100 text-rose-700",
+  rejected: "bg-rose-100 text-rose-700",
 };
 
 const STAGE_COLORS: Record<string, string> = {
-  sourced:             "bg-slate-100 text-slate-600",
-  screened:            "bg-indigo-100 text-indigo-700",
+  sourced: "bg-slate-100 text-slate-600",
+  screened: "bg-indigo-100 text-indigo-700",
   interview_scheduled: "bg-blue-100 text-blue-700",
-  interviewed:         "bg-cyan-100 text-cyan-700",
-  offer_sent:          "bg-purple-100 text-purple-700",
-  offer_pending:       "bg-sky-100 text-sky-700",
-  hired:               "bg-emerald-100 text-emerald-700",
-  rejected:            "bg-rose-100 text-rose-700",
+  interviewed: "bg-cyan-100 text-cyan-700",
+  offer_sent: "bg-purple-100 text-purple-700",
+  offer_pending: "bg-sky-100 text-sky-700",
+  hired: "bg-emerald-100 text-emerald-700",
+  rejected: "bg-rose-100 text-rose-700",
 };
 
 const EMPTY_FORM = {
@@ -116,12 +116,24 @@ export default function CandidatesPage() {
     setSubmitting(false);
 
     if (res.status === 409) {
-      setDuplicateError(data.error + (data.existing ? ` (${data.existing})` : ""));
+      setOpen(false);
+      setForm(EMPTY_FORM);
+      setAlertModal({
+        type: "error",
+        title: "Duplicate Candidate",
+        message: data.error + (data.existing ? ` (${data.existing})` : ""),
+      });
       return;
     }
 
     if (!res.ok) {
-      setDuplicateError("Something went wrong. Please try again.");
+      setOpen(false);
+      setForm(EMPTY_FORM);
+      setAlertModal({
+        type: "error",
+        title: "Something went wrong",
+        message: "Could not save candidate. Please try again.",
+      });
       return;
     }
 
@@ -383,11 +395,10 @@ export default function CandidatesPage() {
                 <button
                   key={page}
                   onClick={() => goToPage(page as number)}
-                  className={`w-8 h-8 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${
-                    currentPage === page
+                  className={`w-8 h-8 rounded-lg text-xs font-semibold border transition-colors cursor-pointer ${currentPage === page
                       ? "text-white border-transparent"
                       : "border-slate-200 text-slate-600 hover:bg-slate-50"
-                  }`}
+                    }`}
                   style={currentPage === page ? { backgroundColor: "#574CFC" } : {}}
                 >
                   {page}
@@ -425,15 +436,6 @@ export default function CandidatesPage() {
             </div>
 
             <div className="px-6 py-5 space-y-7">
-
-              {/* Inline error */}
-              {duplicateError && (
-                <div className="flex items-start gap-3 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3">
-                  <AlertCircle className="w-4 h-4 text-rose-500 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-rose-700 font-medium">{duplicateError}</p>
-                </div>
-              )}
-
               {/* Basic Info */}
               <section>
                 <p className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-3 flex items-center gap-2">
