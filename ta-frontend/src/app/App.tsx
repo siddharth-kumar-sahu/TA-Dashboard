@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import { PageLoader } from "./components/PageLoader";
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -18,6 +13,7 @@ const JobsPage             = lazy(() => import("./pages/JobsPage"));
 const JobProfilePage       = lazy(() => import("./pages/JobProfilePage"));
 const RecruitersPage       = lazy(() => import("./pages/RecruitersPage"));
 const EmailTrackingPage    = lazy(() => import("./pages/EmailTrackingPage"));
+const CalendarPage         = lazy(() => import("./pages/CalendarPage"));
 const ReportsPage          = lazy(() => import("./pages/ReportsPage"));
 const SettingsPage         = lazy(() => import("./pages/SettingsPage"));
 
@@ -27,11 +23,7 @@ export default function App() {
       <ThemeProvider>
         <SidebarProvider>
           <div className="flex flex-col h-screen overflow-hidden bg-slate-50 dark:bg-slate-900">
-
-            {/* Full width top header */}
             <DashboardHeader />
-
-            {/* Sidebar + content */}
             <div className="flex flex-1 overflow-hidden">
               <DashboardSidebar />
               <main className="flex-1 overflow-auto">
@@ -45,6 +37,7 @@ export default function App() {
                       <Route path="/jobs/:id"       element={<JobProfilePage />} />
                       <Route path="/recruiters"     element={<RecruitersPage />} />
                       <Route path="/email-tracking" element={<EmailTrackingPage />} />
+                      <Route path="/calendar"       element={<CalendarPage />} />
                       <Route path="/reports"        element={<ReportsPage />} />
                       <Route path="/settings"       element={<SettingsPage />} />
                       <Route path="*"               element={<Navigate to="/" replace />} />
@@ -53,7 +46,6 @@ export default function App() {
                 </div>
               </main>
             </div>
-
           </div>
         </SidebarProvider>
       </ThemeProvider>

@@ -21,6 +21,9 @@ import "./models/Job.js";
 import candidateRoutes from "./routes/candidate.routes.js";
 import jobRoutes from "./routes/job.routes.js";
 
+import calendarRoutes from "./routes/calendar.routes.js";
+app.use("/api/calendar", calendarRoutes);
+
 app.use("/api/candidates", candidateRoutes);
 app.use("/api/jobs", jobRoutes);
 

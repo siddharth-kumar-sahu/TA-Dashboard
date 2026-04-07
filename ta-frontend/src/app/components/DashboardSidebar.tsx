@@ -1,31 +1,25 @@
 import {
-  LayoutDashboard,
-  Users,
-  Briefcase,
-  UserCog,
-  Mail,
-  FileText,
-  Settings,
-  X,
+  LayoutDashboard, Users, Briefcase,
+  UserCog, Mail, FileText, Settings, Calendar,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useSidebar } from "../contexts/SidebarContext";
 
 const navItems = [
-  { label: "Dashboard",      icon: LayoutDashboard, path: "/" },
-  { label: "Candidates",     icon: Users,           path: "/candidates" },
-  { label: "Jobs / Positions", icon: Briefcase,     path: "/jobs" },
-  { label: "Recruiters",     icon: UserCog,         path: "/recruiters" },
-  { label: "Email Tracking", icon: Mail,            path: "/email-tracking" },
-  { label: "Reports",        icon: FileText,        path: "/reports" },
-  { label: "Settings",       icon: Settings,        path: "/settings" },
+  { label: "Dashboard",       icon: LayoutDashboard, path: "/" },
+  { label: "Candidates",      icon: Users,           path: "/candidates" },
+  { label: "Jobs / Positions", icon: Briefcase,      path: "/jobs" },
+  { label: "Recruiters",      icon: UserCog,         path: "/recruiters" },
+  { label: "Email Tracking",  icon: Mail,            path: "/email-tracking" },
+  { label: "Calendar",        icon: Calendar,        path: "/calendar" },
+  { label: "Reports",         icon: FileText,        path: "/reports" },
+  { label: "Settings",        icon: Settings,        path: "/settings" },
 ];
 
 export function DashboardSidebar() {
   const location = useLocation();
-  const { isOpen, toggleSidebar, closeSidebar } = useSidebar();
+  const { isOpen, closeSidebar } = useSidebar();
 
-  // Active check: handle nested routes like /candidates/:id
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
     return location.pathname.startsWith(path);
@@ -33,12 +27,8 @@ export function DashboardSidebar() {
 
   return (
     <>
-      {/* Mobile overlay */}
       {isOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
-          onClick={closeSidebar}
-        />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden" onClick={closeSidebar} />
       )}
 
       <aside
@@ -50,9 +40,8 @@ export function DashboardSidebar() {
           transition-transform duration-300 ease-in-out
           ${isOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
         `}
-        style={{ top: "3.5rem" }} // 56px = h-14 header height on mobile fixed
+        style={{ top: "3.5rem" }}
       >
-        {/* Nav */}
         <nav className="flex-1 px-3 py-4 overflow-y-auto">
           <ul className="space-y-0.5">
             {navItems.map((item) => {
@@ -71,10 +60,7 @@ export function DashboardSidebar() {
                       }
                     `}
                   >
-                    <item.icon
-                      className={`w-4 h-4 flex-shrink-0 transition-transform group-hover:scale-105
-                        ${active ? "text-white" : "text-slate-400 dark:text-slate-500"}`}
-                    />
+                    <item.icon className={`w-4 h-4 flex-shrink-0 transition-transform group-hover:scale-105 ${active ? "text-white" : "text-slate-400 dark:text-slate-500"}`} />
                     <span className="font-medium">{item.label}</span>
                   </Link>
                 </li>
@@ -83,16 +69,11 @@ export function DashboardSidebar() {
           </ul>
         </nav>
 
-        {/* Bottom */}
         <div className="px-3 py-4 border-t border-slate-100 dark:border-slate-700">
           <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg px-3 py-3">
             <p className="text-xs font-medium text-slate-600 dark:text-slate-300 mb-1">Need help?</p>
-            <a
-              href="https://scaledge.io"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-xs text-indigo-600 dark:text-indigo-400 font-medium hover:underline cursor-pointer"
-            >
+            <a href="https://scaledge.io" target="_blank" rel="noopener noreferrer"
+              className="text-xs text-indigo-600 dark:text-indigo-400 font-medium hover:underline cursor-pointer">
               Contact Support
             </a>
           </div>
